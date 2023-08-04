@@ -1,117 +1,86 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {useState} from 'react';
+import {View, StyleSheet, Alert, Text} from 'react-native';
+import CustomButton from './components/CustomButton';
+import CustomTextView from './components/CustomTextView';
+import CustomTextInput from './components/CustomTextInput';
+import CustomDropdown from './components/CustomDropdown';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const App = () => {
+  const options = [
+    {label: 'Option 1', value: 'option 1'},
+    {label: 'Option 2', value: 'option 2'},
+    {label: 'Option 3', value: 'option 3'},
+  ];
+  const [value, setValue] = useState('');
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  const handleButtonPress = () => {
+    Alert.alert(String(value));
+  };
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const onChangeText = (text: string) => {
+    setValue(text);
+  };
 
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const handleSelectOption = (value: string | number) => {
+    onChangeText(String(value));
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.container}>
+      <CustomTextInput
+        style={styles.input}
+        customStyle={styles.customInput}
+        placeholder="Enter your text"
+        placeholderTextColor="blue"
+        onChangeText={text => onChangeText(text)}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <CustomTextView
+        style={styles.customText}
+        customStyle={{
+          color: 'red',
+          fontSize: 20,
+          fontWeight: 'bold',
+          textAlign: 'center',
+        }}>
+        {value}
+      </CustomTextView>
+
+      <CustomButton title="Press Me" onPress={handleButtonPress} />
+
+      <Text style={styles.title}>Custom Dropdown Example</Text>
+      <CustomDropdown options={options} onSelectOption={handleSelectOption} />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  customText: {
+    // Add any default styles you want for the custom TextView
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  input: {
+    textAlign: 'center',
+    color: 'brown',
+    borderRadius: 9,
+    width: 200,
+    height: 40,
+    borderWidth: 2,
+    borderColor: 'green',
+    paddingLeft: 10,
+    marginBottom: 10,
   },
-  highlight: {
-    fontWeight: '700',
+  customInput: {
+    backgroundColor: 'lightgray',
+  },
+  title: {
+    marginTop: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
   },
 });
 
